@@ -91,17 +91,55 @@ DRUG_SYNONYMS: dict[str, str] = {
 
 def _extract_patient_id(text: str) -> str | None:
     """Extract and normalize patient id from user text (e.g. PT-002, pt002, patient 002)."""
-    match = re.search(r"\bpt[\s\-_]?(\d{1,3})\b", text, flags=re.IGNORECASE)
+    # Handle common possessive / punctuation forms early.
+    normalized = text.replace("’", "'")
+    # Normalize common shorthand possessives: "PT-001s", "PT001's", "patient 1s", "patient 1's"
+    normalized = re.sub(r"\b(pt[\s\-_]?\d{1,3})\s*'?\s*s\b", r"\1", normalized, flags=re.IGNORECASE)
+    normalized = re.sub(r"\b(patient(?:\s+id)?\s*[:#-]?\s*\d{1,3})\s*'?\s*s\b", r"\1", normalized, flags=re.IGNORECASE)
+
+    match = re.search(r"\bpt[\s\-_]?(\d{1,3})\b", normalized, flags=re.IGNORECASE)
     if match:
         return f"PT-{int(match.group(1)):03d}"
 
     match = re.search(
         r"\bpatient(?:\s+id)?\s*[:#-]?\s*(\d{1,3})\b",
-        text,
+        normalized,
         flags=re.IGNORECASE,
     )
     if match:
         return f"PT-{int(match.group(1)):03d}"
+
+    # Handle "patient 1" / "pt 1" style (single digit) and word numbers.
+    word_to_int = {
+        "one": 1,
+        "two": 2,
+        "three": 3,
+        "four": 4,
+        "five": 5,
+        "six": 6,
+        "seven": 7,
+        "eight": 8,
+        "nine": 9,
+        "ten": 10,
+    }
+
+    match = re.search(
+        r"\b(?:patient|pt)\s*[:#-]?\s*(\d{1,2})\b",
+        normalized,
+        flags=re.IGNORECASE,
+    )
+    if match:
+        return f"PT-{int(match.group(1)):03d}"
+
+    match = re.search(
+        r"\b(?:patient|pt)\s*[:#-]?\s*("
+        + "|".join(word_to_int.keys())
+        + r")\b",
+        normalized,
+        flags=re.IGNORECASE,
+    )
+    if match:
+        return f"PT-{word_to_int[match.group(1).lower()]:03d}"
 
     return None
 
