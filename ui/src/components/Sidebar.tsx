@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import axios from "axios";
 import type { HealthStatus, Mode } from "../types";
+import { apiUrl } from "../api";
 import { useStore } from "../store";
 
 const MODES: { key: Mode; label: string; icon: typeof Search }[] = [
@@ -37,7 +38,7 @@ export default function Sidebar({ onSubmitQuery }: SidebarProps) {
 
   const checkHealth = useCallback(async () => {
     try {
-      const { data } = await axios.get<HealthStatus>("/api/health");
+      const { data } = await axios.get<HealthStatus>(apiUrl("/health"));
       setHealth(data);
     } catch {
       setHealth({ postgres: "error", neo4j: "error", llm: "error" });

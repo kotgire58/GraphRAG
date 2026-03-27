@@ -1,6 +1,7 @@
 import { useCallback, useEffect } from "react";
 import axios from "axios";
 import type { GraphData, GraphStats } from "../types";
+import { apiUrl } from "../api";
 import { useStore } from "../store";
 
 export function useGraph() {
@@ -8,7 +9,7 @@ export function useGraph() {
 
   const fetchStats = useCallback(async () => {
     try {
-      const { data } = await axios.get<GraphStats>("/api/graph/stats");
+      const { data } = await axios.get<GraphStats>(apiUrl("/graph/stats"));
       setStats(data);
     } catch {
       /* health check will show offline */
@@ -18,7 +19,9 @@ export function useGraph() {
   const fetchNode = useCallback(
     async (name: string) => {
       try {
-        const { data } = await axios.get(`/api/graph/node/${encodeURIComponent(name)}`);
+        const { data } = await axios.get(
+          apiUrl(`/graph/node/${encodeURIComponent(name)}`)
+        );
         const centerLabel: string =
           data.node?.label ?? Object.keys(data.node ?? {})[0] ?? "Drug";
         const nodes: GraphData["nodes"] = [

@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import axios from "axios";
 import type { ChatResponse, Message, Mode } from "../types";
+import { apiUrl } from "../api";
 import { useStore } from "../store";
 
 export function useChat() {
@@ -25,7 +26,7 @@ export function useChat() {
       setLoading(true);
 
       try {
-        const { data } = await axios.post<ChatResponse>("/api/chat", {
+        const { data } = await axios.post<ChatResponse>(apiUrl("/chat"), {
           message: text,
           mode,
           session_id: sessionId,

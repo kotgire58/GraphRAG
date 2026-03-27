@@ -41,6 +41,8 @@ class Settings(BaseSettings):
     app_host: str = "0.0.0.0"
     app_port: int = 8058
     log_level: str = "INFO"
+    # Comma-separated browser origins allowed for CORS (e.g. Render static site URL).
+    cors_origins: str = "http://localhost:5173,http://localhost:3000"
 
     # Chunking
     chunk_size: int = 800
