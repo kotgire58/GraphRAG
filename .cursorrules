@@ -1,0 +1,115 @@
+# .cursorrules
+
+## Identity
+You are building a GraphRAG Proof of Concept for a live demo.
+The project is a pharmaceutical drug interaction knowledge graph.
+Read CLAUDE.md, PLANNING.md, and TASK.md before writing any code.
+
+## Automatic Rules (Applied to Every File)
+
+### Python Files
+- Always add `from __future__ import annotations` at top
+- Always import TYPE_CHECKING for type-only imports
+- Always use `pathlib.Path` not `os.path`
+- Always use `logging.getLogger(__name__)` not `print()` for logs
+- Always add return type annotations to every function
+- Always add `-> None` for functions with no return value
+- Never use `import *`
+- Never use mutable default arguments (use None and set in body)
+- Use `asyncio.gather()` for concurrent async operations
+
+### Database (PostgreSQL)
+- Never concatenate user input into SQL strings
+- Always use `$1, $2...` parameterized queries with asyncpg
+- Always use `await pool.acquire()` in async context manager
+- Always handle `asyncpg.PostgresError` specifically
+
+### Database (Neo4j)
+- Never concatenate variables into Cypher strings
+- Always use `{param: $param}` syntax in Cypher
+- Always use `MERGE` not `CREATE` for nodes
+- Always use async session: `async with driver.session() as session`
+- Always handle `neo4j.exceptions.Neo4jError` specifically
+
+### LLM Calls
+- Always set `timeout=30` on httpx calls
+- Always validate response JSON before using
+- Always log the raw LLM response at DEBUG level before parsing
+- Never trust LLM JSON is perfectly formatted — always use try/except
+- Always strip markdown code blocks before JSON parsing:
+  ```python
+  text = text.strip()
+  if text.startswith("```"):
+      text = text.split("```")[1]
+      if text.startswith("json"):
+          text = text[4:]
+  ```
+
+### FastAPI Routes
+- Always use Pydantic models for request/response
+- Always add `status_code` to route decorators
+- Always add `summary` and `description` to route decorators
+- Never do database work directly in route handler body
+- Always use `Depends()` for injecting services
+
+### React/TypeScript
+- Never use `any` type
+- Always define interface for component props
+- Always handle loading and error states in components
+- Always use `useCallback` for event handlers passed as props
+- Always clean up event listeners in useEffect cleanup
+- Use `const` not `let` for component definitions
+
+### File Headers
+Every Python file must start with:
+```python
+"""
+Module: {filename}
+Purpose: {one line description}
+"""
+```
+
+### No Magic Numbers
+Define constants for all numeric values:
+```python
+# Bad
+if gfr < 30:
+# Good
+GFR_METFORMIN_CONTRAINDICATION_THRESHOLD = 30
+if gfr < GFR_METFORMIN_CONTRAINDICATION_THRESHOLD:
+```
+
+### Commit-Ready Code Only
+Every file you create must:
+1. Import correctly (no broken imports)
+2. Have no syntax errors
+3. Have complete function implementations
+4. Have type hints on all public functions
+5. Be runnable without modification
+
+## Node Label Enforcement
+The ONLY valid Neo4j node labels are:
+Drug, Enzyme, Transporter, Condition, Patient, Physician,
+Pharmacist, Hospital, Manufacturer, Protocol, ClinicalCase, Contraindication
+
+If LLM extraction returns any other label, map it to the closest valid label
+or skip it. Never create arbitrary labels.
+
+## Relationship Type Enforcement  
+The ONLY valid Neo4j relationship types are:
+INHIBITS, INDUCES, METABOLIZED_BY, CLEARED_BY, INHIBITS_TRANSPORTER,
+TREATS, CONTRAINDICATED_WITH, INTERACTS_WITH, CAUSES, MANUFACTURED_BY,
+ALTERNATIVE_TO, HAS_CONDITION, PRESCRIBED, TREATED_BY, ADMITTED_TO,
+WORKS_AT, FOLLOWS_PROTOCOL, COVERS, INVOLVES_PATIENT, PRECIPITATED_BY,
+PREVENTED_BY, METABOLIZES, INCREASES_RISK_OF, SUPPLIES, DOCUMENTED_IN,
+SUPPLIED_BY, REVIEWED_BY
+
+If LLM returns any other relationship type, map to INTERACTS_WITH or skip.
+
+## When Starting Each Phase
+1. Read TASK.md current phase
+2. Read all existing files in the project
+3. Identify what already exists vs what needs to be created
+4. Start with the simplest foundation and build up
+5. Verify each component works before moving to the next
+6. Update TASK.md checkboxes as you complete tasks

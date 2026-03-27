@@ -1,0 +1,98 @@
+[
+  {
+    "question": "PT-004 is being treated for a fungal infection. Their doctor wants to prescribe Fluconazole. PT-004 is also scheduled for a CT scan with IV contrast next week. Is it safe to proceed with both the Fluconazole and the contrast procedure given PT-004's current medications, and what specific monitoring protocol should be followed?",
+    "ground_truth": "DANGEROUS. Multiple simultaneous risks exist. Risk 1 (Critical): Fluconazole strongly inhibits CYP2C9 which metabolizes Warfarin. PT-004 is prescribed Warfarin. Fluconazole will cause Warfarin to accumulate, raising INR to dangerous levels and creating severe bleeding risk. Warfarin dose must be reduced 25 to 50 percent and INR must be checked within 2 to 3 days of starting Fluconazole. Risk 2 (Moderate): Fluconazole causes QT prolongation. PT-004 has Atrial Fibrillation. QT prolongation in an AF patient increases arrhythmia risk. ECG monitoring is required. Risk 3 (Resolved): IV contrast requires Metformin to be held before and after the procedure. PT-004 is not prescribed Metformin so there is no lactic acidosis risk from the contrast procedure. The contrast scan can proceed safely. Monitoring protocol: Check INR before Fluconazole, recheck INR 2 to 3 days after starting, monitor serum potassium due to Lisinopril plus Spironolactone combination, ECG monitoring for QT interval, proceed with contrast safely. Consider echinocandin antifungal as safer alternative to Fluconazole.",
+    "category": "safety_multihop_complex",
+    "requires_hops": 7
+  },
+  {
+    "question": "Is Fluconazole safe for PT-005?",
+    "ground_truth": "DANGEROUS. Fluconazole strongly inhibits CYP2C9. PT-005 is prescribed Glipizide, a sulfonylurea metabolized by CYP2C9. Fluconazole will cause Glipizide to accumulate, leading to severe and prolonged hypoglycemia. This combination is contraindicated.",
+    "category": "safety_dangerous",
+    "requires_hops": 3
+  },
+  {
+    "question": "Is Fluconazole safe for PT-001?",
+    "ground_truth": "CAUTION REQUIRED. Fluconazole moderately inhibits CYP3A4. PT-001 is prescribed Atorvastatin which is metabolized by CYP3A4. Fluconazole will increase Atorvastatin levels moderately. PT-001 is not prescribed any CYP2C9 substrates so there is no dangerous interaction. Monitoring is recommended.",
+    "category": "safety_caution",
+    "requires_hops": 3
+  },
+  {
+    "question": "A patient is taking Warfarin, Amiodarone, and Digoxin. Is it safe to add Fluconazole?",
+    "ground_truth": "DANGEROUS. Three simultaneous cascades occur. First, Fluconazole inhibits CYP2C9 which metabolizes Warfarin, increasing INR and bleeding risk. Second, Amiodarone inhibits P-glycoprotein which clears Digoxin, causing Digoxin toxicity. Third, both Fluconazole and Amiodarone cause QT prolongation, creating additive risk of torsades de pointes.",
+    "category": "safety_dangerous",
+    "requires_hops": 5
+  },
+  {
+    "question": "What conditions does PT-001 have?",
+    "ground_truth": "PT-001 has three conditions: Type 2 Diabetes Mellitus, Hypertension, and Dyslipidemia.",
+    "category": "factual_patient",
+    "requires_hops": 1
+  },
+  {
+    "question": "What medications is PT-005 currently taking?",
+    "ground_truth": "PT-005 is currently prescribed Metformin, Glipizide, and Simvastatin.",
+    "category": "factual_patient",
+    "requires_hops": 1
+  },
+  {
+    "question": "Which patients are currently prescribed Warfarin?",
+    "ground_truth": "Three patients are prescribed Warfarin: PT-002, PT-004, and PT-008.",
+    "category": "factual_aggregate",
+    "requires_hops": 1
+  },
+  {
+    "question": "Which patient is on Prinivil and what is dangerous for them?",
+    "ground_truth": "Multiple patients are on Prinivil which is the brand name for Lisinopril. PT-007 is prescribed Lisinopril along with Clopidogrel. The dangerous interaction for PT-007 is Clopidogrel combined with Omeprazole, which inhibits CYP2C19 needed to activate Clopidogrel, reducing its antiplatelet effect and increasing stent thrombosis risk.",
+    "category": "safety_brand_name",
+    "requires_hops": 3
+  },
+  {
+    "question": "What does CYP3A4 metabolize?",
+    "ground_truth": "CYP3A4 metabolizes approximately 50 percent of all clinically used drugs including Atorvastatin, Simvastatin, Amlodipine, Cyclosporine, Tacrolimus, Amiodarone, Sildenafil, Carbamazepine, Clarithromycin, and Ketoconazole.",
+    "category": "informational_enzyme",
+    "requires_hops": 1
+  },
+  {
+    "question": "Which drugs interact with P-glycoprotein?",
+    "ground_truth": "Drugs that interact with P-glycoprotein include Digoxin which is cleared by P-glycoprotein, and Amiodarone, Clarithromycin, Cyclosporine, and Ketoconazole which inhibit P-glycoprotein. Inhibition of P-glycoprotein increases Digoxin levels causing toxicity risk.",
+    "category": "informational_transporter",
+    "requires_hops": 2
+  },
+  {
+    "question": "Is it safe to prescribe Tacrolimus and Fluconazole together for a transplant patient?",
+    "ground_truth": "DANGEROUS. Fluconazole inhibits CYP3A4 which extensively metabolizes Tacrolimus. Fluconazole will increase Tacrolimus blood levels 2 to 4 fold within days. This causes nephrotoxicity which can destroy the transplanted kidney, and neurotoxicity. An echinocandin antifungal such as Caspofungin or Anidulafungin should be used instead as they do not interact with CYP3A4.",
+    "category": "safety_dangerous",
+    "requires_hops": 3
+  },
+  {
+    "question": "What enzyme does Metformin use for clearance?",
+    "ground_truth": "Metformin is not metabolized by CYP enzymes. It is cleared by the kidneys via OCT2 and MATE1 transporters. This is why Metformin does not interact with most CYP enzyme inhibitors like Fluconazole.",
+    "category": "informational_drug",
+    "requires_hops": 2
+  },
+  {
+    "question": "Which patients have Type 2 Diabetes?",
+    "ground_truth": "Four patients have Type 2 Diabetes Mellitus: PT-001, PT-005, PT-007, and PT-010.",
+    "category": "factual_aggregate",
+    "requires_hops": 1
+  },
+  {
+    "question": "What is the risk of combining Amiodarone and Warfarin?",
+    "ground_truth": "DANGEROUS. Amiodarone inhibits CYP2C9 which metabolizes Warfarin. This causes Warfarin levels to rise significantly, increasing INR and bleeding risk. The interaction is gradual due to Amiodarone's very long half-life of 40 to 55 days. Warfarin dose reduction of 30 to 50 percent is typically needed and intensive INR monitoring is required.",
+    "category": "safety_dangerous",
+    "requires_hops": 3
+  },
+  {
+    "question": "Which manufacturer makes Fluconazole?",
+    "ground_truth": "Fluconazole was originally manufactured by Pfizer under the brand name Diflucan. Generic versions are manufactured by Teva Pharmaceuticals, Aurobindo Pharma, Mylan, Sandoz, and Apotex.",
+    "category": "informational_manufacturer",
+    "requires_hops": 1
+  },
+  {
+    "question": "What is the treatment protocol for antifungal prescribing when a patient is on Warfarin?",
+    "ground_truth": "When prescribing fluconazole to a patient on Warfarin, mandatory INR monitoring is required within 2 to 3 days of starting fluconazole because fluconazole inhibits CYP2C9 which metabolizes Warfarin. Anticipate Warfarin dose reduction of 25 to 50 percent. This is classified as a major drug interaction requiring prescriber alert.",
+    "category": "safety_protocol",
+    "requires_hops": 2
+  }
+]

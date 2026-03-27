@@ -1,0 +1,420 @@
+{
+  "timestamp": "2026-03-26T19:41:21.227382",
+  "total_planned": 16,
+  "completed_cases": 16,
+  "in_progress": false,
+  "max_concurrent_cases": 4,
+  "api_base": "http://127.0.0.1:8058",
+  "judge_model": "openai/gpt-4.1-mini",
+  "results": [
+    {
+      "case_index": 0,
+      "question": "PT-004 is being treated for a fungal infection. Their doctor wants to prescribe Fluconazole. PT-004 is also scheduled for a CT scan with IV contrast next week. Is it safe to proceed with both the Fluconazole and the contrast procedure given PT-004's current medications, and what specific monitoring protocol should be followed?",
+      "category": "safety_multihop_complex",
+      "requires_hops": 7,
+      "vector": {
+        "answer": "The provided documents do not contain specific information about patient PT-004's diagnoses, current medications, or kidney function status, which are critical to fully assess the safety of prescribin",
+        "scores": {
+          "AnswerRelevancyMetric": 0.6,
+          "FaithfulnessMetric": 0.938,
+          "ContextualRecallMetric": 0.0,
+          "ContextualPrecisionMetric": 0.333
+        }
+      },
+      "graph": {
+        "answer": "###SIMPLE###\nVERDICT: DANGEROUS  \nFluconazole is not safe for this patient because it can dangerously increase the effects of their blood thinner and heart medications, raising the risk of serious hea",
+        "scores": {
+          "AnswerRelevancyMetric": 1.0,
+          "FaithfulnessMetric": 0.917,
+          "ContextualRecallMetric": 0.714,
+          "ContextualPrecisionMetric": 0.743
+        }
+      },
+      "errors": []
+    },
+    {
+      "case_index": 1,
+      "question": "Is Fluconazole safe for PT-005?",
+      "category": "safety_dangerous",
+      "requires_hops": 3,
+      "vector": {
+        "answer": "Fluconazole is NOT safe for patient PT-005.\n\nSupporting details from the documents:\n\n- PT-005 is a 52-year-old male with Type 2 Diabetes on Glipizide and Metformin (doc10_clinical_case_studies.md).\n- ",
+        "scores": {
+          "AnswerRelevancyMetric": 1.0,
+          "FaithfulnessMetric": 0.875,
+          "ContextualRecallMetric": 1.0,
+          "ContextualPrecisionMetric": 0.367
+        }
+      },
+      "graph": {
+        "answer": "###SIMPLE###\nVERDICT: DANGEROUS\nFluconazole is not safe for this patient because it strongly interferes with their diabetes medication, which can cause dangerously low blood sugar levels and other ser",
+        "scores": {
+          "AnswerRelevancyMetric": 1.0,
+          "FaithfulnessMetric": 0.889,
+          "ContextualRecallMetric": 0.5,
+          "ContextualPrecisionMetric": 0.525
+        }
+      },
+      "errors": []
+    },
+    {
+      "case_index": 2,
+      "question": "Is Fluconazole safe for PT-001?",
+      "category": "safety_caution",
+      "requires_hops": 3,
+      "vector": {
+        "answer": "The available information does not provide a complete medication list or detailed clinical data for patient PT-001, so a definitive safety assessment cannot be made solely from the provided chunks.\n\nH",
+        "scores": {
+          "AnswerRelevancyMetric": 0.706,
+          "FaithfulnessMetric": 0.917,
+          "ContextualRecallMetric": 0.8,
+          "ContextualPrecisionMetric": 0.333
+        }
+      },
+      "graph": {
+        "answer": "###SIMPLE###\nVERDICT: DANGEROUS\nFluconazole is not safe for this patient because it strongly interferes with important medications they are taking, which can cause serious and potentially life-threate",
+        "scores": {
+          "AnswerRelevancyMetric": 1.0,
+          "FaithfulnessMetric": 1.0,
+          "ContextualRecallMetric": 0.8,
+          "ContextualPrecisionMetric": 0.333
+        }
+      },
+      "errors": []
+    },
+    {
+      "case_index": 3,
+      "question": "A patient is taking Warfarin, Amiodarone, and Digoxin. Is it safe to add Fluconazole?",
+      "category": "safety_dangerous",
+      "requires_hops": 5,
+      "vector": {
+        "answer": "Adding Fluconazole to a patient taking Warfarin, Amiodarone, and Digoxin is not safe due to multiple major drug interactions and risks:\n\n1. Fluconazole inhibits CYP2C9, which metabolizes Warfarin. Thi",
+        "scores": {
+          "AnswerRelevancyMetric": 1.0,
+          "FaithfulnessMetric": 0.917,
+          "ContextualRecallMetric": 1.0,
+          "ContextualPrecisionMetric": 0.95
+        }
+      },
+      "graph": {
+        "answer": "###SIMPLE###\nVERDICT: DANGEROUS\nFluconazole is not safe to add because it strongly interacts with Warfarin and Amiodarone, increasing the risk of serious heart and bleeding problems.\n\n###END_SIMPLE###",
+        "scores": {
+          "AnswerRelevancyMetric": 1.0,
+          "FaithfulnessMetric": 0.824,
+          "ContextualRecallMetric": 1.0,
+          "ContextualPrecisionMetric": 0.235
+        }
+      },
+      "errors": []
+    },
+    {
+      "case_index": 4,
+      "question": "What conditions does PT-001 have?",
+      "category": "factual_patient",
+      "requires_hops": 1,
+      "vector": {
+        "answer": "Patient PT-001 has the following conditions:\n- Primary diagnosis: Type 2 Diabetes Mellitus (diagnosed 2014)\n- Secondary diagnosis: Hypertension (diagnosed 2016)\n- Additional diagnosis: Dyslipidemia (d",
+        "scores": {
+          "AnswerRelevancyMetric": 0.857,
+          "FaithfulnessMetric": 1.0,
+          "ContextualRecallMetric": 1.0,
+          "ContextualPrecisionMetric": 1.0
+        }
+      },
+      "graph": {
+        "answer": "PT-001 has the following conditions: Dyslipidemia, Hypertension, Type 2 Diabetes Mellitus, and Type 2 Diabetes Mellitus (steroid-induced).",
+        "scores": {
+          "AnswerRelevancyMetric": 1.0,
+          "FaithfulnessMetric": 1.0,
+          "ContextualRecallMetric": 1.0,
+          "ContextualPrecisionMetric": 0.498
+        }
+      },
+      "errors": []
+    },
+    {
+      "case_index": 5,
+      "question": "What medications is PT-005 currently taking?",
+      "category": "factual_patient",
+      "requires_hops": 1,
+      "vector": {
+        "answer": "Patient PT-005 is currently taking the following medications:\n- Metformin 500mg twice daily\n- Glipizide 5mg twice daily\n- Simvastatin 40mg daily\n\nThis information is from the patient records in doc04_",
+        "scores": {
+          "AnswerRelevancyMetric": 1.0,
+          "FaithfulnessMetric": 1.0,
+          "ContextualRecallMetric": 1.0,
+          "ContextualPrecisionMetric": 1.0
+        }
+      },
+      "graph": {
+        "answer": "PT-005 is currently taking Metformin, Simvastatin, and Glipizide. This is based on the graph relationships showing PT-005 -[PRESCRIBED]-> these medications.",
+        "scores": {
+          "AnswerRelevancyMetric": 1.0,
+          "FaithfulnessMetric": 1.0,
+          "ContextualRecallMetric": 1.0,
+          "ContextualPrecisionMetric": 0.346
+        }
+      },
+      "errors": []
+    },
+    {
+      "case_index": 6,
+      "question": "Which patients are currently prescribed Warfarin?",
+      "category": "factual_aggregate",
+      "requires_hops": 1,
+      "vector": {
+        "answer": "The provided document chunks do not contain a complete medication list for all patients, and specifically, there is no explicit mention of any patient currently prescribed Warfarin. The only patient m",
+        "scores": {
+          "AnswerRelevancyMetric": 0.556,
+          "FaithfulnessMetric": 1.0,
+          "ContextualRecallMetric": 0.0,
+          "ContextualPrecisionMetric": 0.0
+        }
+      },
+      "graph": {
+        "answer": "###SIMPLE###\nVERDICT: SAFE\nPatients PT-002, PT-004, and PT-008 are prescribed Warfarin, and no dangerous drug interactions involving Warfarin are currently identified in the provided data.\n###END_SIMP",
+        "scores": {
+          "AnswerRelevancyMetric": 0.125,
+          "FaithfulnessMetric": 0.333,
+          "ContextualRecallMetric": 1.0,
+          "ContextualPrecisionMetric": 0.735
+        }
+      },
+      "errors": []
+    },
+    {
+      "case_index": 7,
+      "question": "Which patient is on Prinivil and what is dangerous for them?",
+      "category": "safety_brand_name",
+      "requires_hops": 3,
+      "vector": {
+        "answer": "The patient on Prinivil (which is a brand name for Lisinopril, an ACE inhibitor) is described in the clinical case study from doc10_clinical_case_studies.md. This patient is PT-007, a 55-year-old male",
+        "scores": {
+          "AnswerRelevancyMetric": 1.0,
+          "FaithfulnessMetric": 1.0,
+          "ContextualRecallMetric": 1.0,
+          "ContextualPrecisionMetric": 0.25
+        }
+      },
+      "graph": {
+        "answer": "###SIMPLE###\nVERDICT: SAFE\nThe patients taking Prinivil (Lisinopril) do not have any dangerous drug interactions based on the information given, but they should be aware of the risk of high potassium ",
+        "scores": {
+          "AnswerRelevancyMetric": 0.556,
+          "FaithfulnessMetric": 1.0,
+          "ContextualRecallMetric": 0.333,
+          "ContextualPrecisionMetric": 0.735
+        }
+      },
+      "errors": []
+    },
+    {
+      "case_index": 8,
+      "question": "What does CYP3A4 metabolize?",
+      "category": "informational_enzyme",
+      "requires_hops": 1,
+      "vector": {
+        "answer": "CYP3A4 metabolizes approximately 50 percent of all clinically used drugs. Its substrates include atorvastatin, simvastatin, amlodipine, cyclosporine, tacrolimus, sildenafil, clarithromycin, ketoconazo",
+        "scores": {
+          "AnswerRelevancyMetric": 1.0,
+          "FaithfulnessMetric": 1.0,
+          "ContextualRecallMetric": 1.0,
+          "ContextualPrecisionMetric": 1.0
+        }
+      },
+      "graph": {
+        "answer": "CYP3A4 metabolizes several drugs including Warfarin, Simvastatin, Amiodarone, Carbamazepine, Cyclosporine, Amlodipine, Sildenafil, and also plays a secondary activation role in metabolizing Clopidogre",
+        "scores": {
+          "AnswerRelevancyMetric": 1.0,
+          "FaithfulnessMetric": 1.0,
+          "ContextualRecallMetric": 1.0,
+          "ContextualPrecisionMetric": 0.455
+        }
+      },
+      "errors": []
+    },
+    {
+      "case_index": 9,
+      "question": "Which drugs interact with P-glycoprotein?",
+      "category": "informational_transporter",
+      "requires_hops": 2,
+      "vector": {
+        "answer": "The drugs that interact with P-glycoprotein (P-gp) include:\n\n1. **Substrates of P-gp:**\n   - Digoxin\n   - Dabigatran\n   - Cyclosporine\n   - Tacrolimus\n   - Paclitaxel\n   - Loperamide  \n   (Source: doc",
+        "scores": {
+          "AnswerRelevancyMetric": 1.0,
+          "FaithfulnessMetric": 0.8,
+          "ContextualRecallMetric": 1.0,
+          "ContextualPrecisionMetric": 0.639
+        }
+      },
+      "graph": {
+        "answer": "The drugs that interact with P-glycoprotein according to the graph are:\n\n- Dronedarone (inhibits transporter)\n- Cyclosporine (inhibits transporter, strong inhibition, and is cleared by P-glycoprotein)",
+        "scores": {
+          "AnswerRelevancyMetric": 0.941,
+          "FaithfulnessMetric": 1.0,
+          "ContextualRecallMetric": 0.5,
+          "ContextualPrecisionMetric": 0.623
+        }
+      },
+      "errors": []
+    },
+    {
+      "case_index": 10,
+      "question": "Is it safe to prescribe Tacrolimus and Fluconazole together for a transplant patient?",
+      "category": "safety_dangerous",
+      "requires_hops": 3,
+      "vector": {
+        "answer": "No, it is not safe to prescribe Tacrolimus and Fluconazole together for a transplant patient without careful management. Fluconazole is a moderate CYP3A4 inhibitor, and Tacrolimus is extensively metab",
+        "scores": {
+          "AnswerRelevancyMetric": 1.0,
+          "FaithfulnessMetric": 0.923,
+          "ContextualRecallMetric": 1.0,
+          "ContextualPrecisionMetric": 1.0
+        }
+      },
+      "graph": {
+        "answer": "###SIMPLE###\nVERDICT: DANGEROUS  \nFluconazole is not safe to use with Tacrolimus because it greatly increases Tacrolimus levels, which can cause serious harm including kidney damage and heart problems",
+        "scores": {
+          "AnswerRelevancyMetric": 1.0,
+          "FaithfulnessMetric": 0.667,
+          "ContextualRecallMetric": 0.75,
+          "ContextualPrecisionMetric": 0.268
+        }
+      },
+      "errors": []
+    },
+    {
+      "case_index": 11,
+      "question": "What enzyme does Metformin use for clearance?",
+      "category": "informational_drug",
+      "requires_hops": 2,
+      "vector": {
+        "answer": "Metformin is not metabolized by CYP enzymes. Instead, it is eliminated via renal excretion through transporters: OCT2 (organic cation transporter 2) for uptake into renal cells and MATE1/MATE2-K (mult",
+        "scores": {
+          "AnswerRelevancyMetric": 0.625,
+          "FaithfulnessMetric": 1.0,
+          "ContextualRecallMetric": 1.0,
+          "ContextualPrecisionMetric": 1.0
+        }
+      },
+      "graph": {
+        "answer": "Metformin is cleared by the enzymes MATE, OCT2, and MATE1 according to the graph facts.",
+        "scores": {
+          "AnswerRelevancyMetric": 0.25,
+          "FaithfulnessMetric": 0.0,
+          "ContextualRecallMetric": 0.333,
+          "ContextualPrecisionMetric": 0.214
+        }
+      },
+      "errors": []
+    },
+    {
+      "case_index": 12,
+      "question": "Which patients have Type 2 Diabetes?",
+      "category": "factual_aggregate",
+      "requires_hops": 1,
+      "vector": {
+        "answer": "The patients with Type 2 Diabetes are:\n\n1. Patient ID PT-001: Male, age 58, diagnosed with Type 2 Diabetes Mellitus in 2014 (doc04_patient_records.md).\n2. Patient ID PT-005: Male, age 52, diagnosed wi",
+        "scores": {
+          "AnswerRelevancyMetric": 0.571,
+          "FaithfulnessMetric": 1.0,
+          "ContextualRecallMetric": 1.0,
+          "ContextualPrecisionMetric": 0.45
+        }
+      },
+      "graph": {
+        "answer": "The patients who have Type 2 Diabetes according to the graph are PT-001, PT-005, PT-007, and PT-010.",
+        "scores": {
+          "AnswerRelevancyMetric": 1.0,
+          "FaithfulnessMetric": 1.0,
+          "ContextualRecallMetric": 1.0,
+          "ContextualPrecisionMetric": 0.679
+        }
+      },
+      "errors": []
+    },
+    {
+      "case_index": 13,
+      "question": "What is the risk of combining Amiodarone and Warfarin?",
+      "category": "safety_dangerous",
+      "requires_hops": 3,
+      "vector": {
+        "answer": "The combination of Amiodarone and Warfarin carries a major risk due to a significant drug interaction. Amiodarone inhibits the enzymes CYP2C9 and CYP3A4, which metabolize Warfarin (specifically S-warf",
+        "scores": {
+          "AnswerRelevancyMetric": 1.0,
+          "FaithfulnessMetric": 0.875,
+          "ContextualRecallMetric": 1.0,
+          "ContextualPrecisionMetric": 1.0
+        }
+      },
+      "graph": {
+        "answer": "Combining Amiodarone and Warfarin increases the risk associated with Warfarin. According to the graph, Amiodarone increases the risk of Warfarin, likely due to its moderate inhibition of CYP2C9, the e",
+        "scores": {
+          "AnswerRelevancyMetric": 1.0,
+          "FaithfulnessMetric": 1.0,
+          "ContextualRecallMetric": 0.75,
+          "ContextualPrecisionMetric": 0.188
+        }
+      },
+      "errors": []
+    },
+    {
+      "case_index": 14,
+      "question": "Which manufacturer makes Fluconazole?",
+      "category": "informational_manufacturer",
+      "requires_hops": 1,
+      "vector": {
+        "answer": "Fluconazole is originally manufactured by Pfizer (Diflucan original). The primary manufacturers of the generic supply of Fluconazole are Teva Pharmaceuticals and Aurobindo Pharma (India) [doc09_manufa",
+        "scores": {
+          "AnswerRelevancyMetric": 0.75,
+          "FaithfulnessMetric": 1.0,
+          "ContextualRecallMetric": 1.0,
+          "ContextualPrecisionMetric": 1.0
+        }
+      },
+      "graph": {
+        "answer": "The provided graph facts do not include information about the manufacturer of Fluconazole.",
+        "scores": {
+          "AnswerRelevancyMetric": 0.0,
+          "FaithfulnessMetric": 1.0,
+          "ContextualRecallMetric": 0.0,
+          "ContextualPrecisionMetric": 0.0
+        }
+      },
+      "errors": []
+    },
+    {
+      "case_index": 15,
+      "question": "What is the treatment protocol for antifungal prescribing when a patient is on Warfarin?",
+      "category": "safety_protocol",
+      "requires_hops": 2,
+      "vector": {
+        "answer": "The treatment protocol for antifungal prescribing when a patient is on Warfarin includes the following key points:\n\n- Fluconazole is commonly used for candidiasis but has a major drug interaction with",
+        "scores": {
+          "AnswerRelevancyMetric": 1.0,
+          "FaithfulnessMetric": 0.875,
+          "ContextualRecallMetric": 1.0,
+          "ContextualPrecisionMetric": 1.0
+        }
+      },
+      "graph": {
+        "answer": "When prescribing antifungal treatment for a patient on Warfarin, it is important to consider that certain antifungals like Fluconazole increase the risk associated with Warfarin. This interaction can ",
+        "scores": {
+          "AnswerRelevancyMetric": 0.833,
+          "FaithfulnessMetric": 0.9,
+          "ContextualRecallMetric": 0.333,
+          "ContextualPrecisionMetric": 0.204
+        }
+      },
+      "errors": []
+    }
+  ],
+  "collected_errors": [],
+  "winner_summary": {
+    "margin": 0.05,
+    "vector_wins": 27,
+    "graph_wins": 14,
+    "ties": 23,
+    "skipped_missing_scores": 0,
+    "total_metric_comparisons": 64
+  }
+}
