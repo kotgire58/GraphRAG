@@ -11,6 +11,7 @@ import asyncio
 import json
 import logging
 import math
+import re
 from dataclasses import dataclass, field
 
 import httpx
@@ -86,6 +87,39 @@ DRUG_SYNONYMS: dict[str, str] = {
     'lantus': 'Insulin Glargine',
     'basaglar': 'Insulin Glargine',
 }
+
+
+def _extract_patient_id(text: str) -> str | None:
+    """Extract and normalize patient id from user text (e.g. PT-002, pt002, patient 002)."""
+    match = re.search(r"\bpt[\s\-_]?(\d{1,3})\b", text, flags=re.IGNORECASE)
+    if match:
+        return f"PT-{int(match.group(1)):03d}"
+
+    match = re.search(
+        r"\bpatient(?:\s+id)?\s*[:#-]?\s*(\d{1,3})\b",
+        text,
+        flags=re.IGNORECASE,
+    )
+    if match:
+        return f"PT-{int(match.group(1)):03d}"
+
+    return None
+
+
+def _is_patient_demographics_query(query_lower: str) -> bool:
+    """True when query asks for direct patient demographics."""
+    demographic_terms = (
+        "age",
+        "sex",
+        "gender",
+        "weight",
+        "height",
+        "demographic",
+    )
+    return (
+        any(term in query_lower for term in demographic_terms)
+        and ("patient" in query_lower or "pt" in query_lower)
+    )
 
 
 def _resolve_drug_synonyms(entities: list[str]) -> list[str]:
@@ -222,12 +256,17 @@ async def run_aggregate_query(
     an aggregate query.
     """
     query_lower = query.lower()
+    patient_id = _extract_patient_id(query)
 
     is_list_all_patients = any(p in query_lower for p in [
         'all patients', 'list patients', 'how many patients',
         'every patient', 'each patient', 'list out',
         'all pt-', 'patients and their',
     ])
+    is_patient_demographics = (
+        patient_id is not None
+        and _is_patient_demographics_query(query_lower)
+    )
 
     is_list_all_drugs = any(p in query_lower for p in [
         'all drugs', 'list drugs', 'all medications',
@@ -240,6 +279,7 @@ async def run_aggregate_query(
     ])
 
     if not any([
+        is_patient_demographics,
         is_list_all_patients,
         is_list_all_drugs,
         is_list_all_conditions,
@@ -248,6 +288,7 @@ async def run_aggregate_query(
 
     logger.info(
         f"Aggregate query detected: "
+        f"patient_demographics={is_patient_demographics}, "
         f"patients={is_list_all_patients}, "
         f"drugs={is_list_all_drugs}, "
         f"conditions={is_list_all_conditions}"
@@ -257,6 +298,51 @@ async def run_aggregate_query(
         async with driver.session(
             database=settings.neo4j_database
         ) as session:
+
+            if is_patient_demographics and patient_id:
+                result = await session.run(
+                    """
+                    MATCH (p:Patient {patient_id: $pid})
+                    RETURN p.patient_id AS patient_id,
+                           p.age AS age,
+                           p.sex AS sex,
+                           p.weight_kg AS weight_kg,
+                           p.height_cm AS height_cm
+                    LIMIT 1
+                    """,
+                    pid=patient_id,
+                )
+                row = await result.single()
+                if not row:
+                    return AggregateQueryResult(
+                        text=f"No patient found for ID {patient_id}.",
+                        traversal_graph={"nodes": [], "links": []},
+                    )
+
+                pid = row.get("patient_id") or patient_id
+                age = row.get("age")
+                sex = row.get("sex")
+                weight = row.get("weight_kg")
+                height = row.get("height_cm")
+
+                fields = []
+                if age is not None:
+                    fields.append(f"age {age}")
+                if sex:
+                    fields.append(f"sex {sex}")
+                if weight is not None:
+                    fields.append(f"weight {weight} kg")
+                if height is not None:
+                    fields.append(f"height {height} cm")
+
+                details = ", ".join(fields) if fields else "no demographic fields recorded"
+                return AggregateQueryResult(
+                    text=f"{pid}: {details}.",
+                    traversal_graph={
+                        "nodes": [{"id": pid, "name": pid, "label": "Patient"}],
+                        "links": [],
+                    },
+                )
 
             if is_list_all_patients:
                 result = await session.run("""
